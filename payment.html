@@ -162,12 +162,12 @@
     document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
       radio.addEventListener('change', e => {
         const method = e.target.value;
-        const amount = document.getElementById('amount').value;
+        const amount = document.getElementById('package').value;
         const box = document.querySelector('.payment-instructions');
         box.style.display = 'block';
         box.innerHTML = `
           <strong>${method} নম্বর:</strong> ${paymentNumbers[method]}<br>
-          অনুগ্রহ করে <strong>${amount} টাকা</strong> পাঠান এবং ট্রানজেকশন আইডি দিন।
+          অনুগ্রহ করে <strong>${package} টাকা</strong> পাঠান এবং ট্রানজেকশন আইডি দিন।
         `;
       });
     });
