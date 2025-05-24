@@ -106,17 +106,14 @@
       <label>প্যাকেজ</label>
       <input type="text" id="package" readonly />
 
-      <label>টাকার পরিমাণ</label>
-      <input type="number" id="amount" readonly />
-
       <label>পেমেন্ট মাধ্যম নির্বাচন করুন</label>
       <div class="payment-option">
         <input type="radio" name="paymentMethod" value="bKash" id="bkash" required />
-        <label for="bkash"><img src="https://upload.wikimedia.org/wikipedia/commons/7/77/BKash_Logo.svg" style="height:20px; vertical-align:middle;"> bKash</label>
+        <label for="bkash"><img src="https://assets.onecompiler.app/43ea4pg72/43eq73f47/download%20(3).png" style="height:20px; vertical-align:middle;"> bKash</label>
       </div>
       <div class="payment-option">
         <input type="radio" name="paymentMethod" value="Nagad" id="nagad" />
-        <label for="nagad"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Nagad_Logo.svg" style="height:20px; vertical-align:middle;"> Nagad</label>
+        <label for="nagad"><img src="https://assets.onecompiler.app/43ea4pg72/43eq73f47/download%20(2).png" style="height:20px; vertical-align:middle;"> Nagad</label>
       </div>
 
       <label>ট্রানজেকশন আইডি</label>
@@ -157,8 +154,8 @@
 
     // Payment number mapping
     const paymentNumbers = {
-      bKash: '017XXXXXXXX',
-      Nagad: '018XXXXXXXX'
+      bKash: '01318645435',
+      Nagad: '01855966005'
     };
 
     // Show instructions
@@ -170,7 +167,7 @@
         box.style.display = 'block';
         box.innerHTML = `
           <strong>${method} নম্বর:</strong> ${paymentNumbers[method]}<br>
-          অনুগ্রহ করে <strong>${amount} টাকা</strong> পাঠান এবং ট্রানজেকশন আইডি দিন।
+          অনুগ্রহ করে <strong>${package} টাকা</strong> পাঠান এবং ট্রানজেকশন আইডি দিন।
         `;
       });
     });
@@ -192,7 +189,7 @@
 
       try {
         await db.collection('payments').add(data);
-        Swal.fire("সাবমিট সফল", "আপনার পেমেন্ট ডেটা গ্রহণ করা হয়েছে!", "success");
+        Swal.fire("সাবমিট সফল", "আপনার পেমেন্ট ডেটা গ্রহণ করা হয়েছে! কিছুক্ষণ অপেক্ষা করুন আপনার তথ্য যাচাই করে আপনার সাথে যোগাযোগ করা হবে", "success");
         document.getElementById('paymentForm').reset();
         document.querySelector('.payment-instructions').style.display = 'none';
       } catch (error) {
