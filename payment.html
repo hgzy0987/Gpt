@@ -1,158 +1,205 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HGZY SIGNAL GPT - Payment</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(145deg, #1a1a1a, #222);
-      color: #fff;
-      padding: 30px 10px;
+      background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
     }
     .container {
-      max-width: 500px;
-      margin: auto;
-      background: #2c2c2e;
-      border-radius: 20px;
+      background: #121212;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #ff6f61;
       padding: 30px;
-      box-shadow: 0 0 25px rgba(255, 0, 128, 0.2);
+      max-width: 480px;
+      width: 100%;
     }
-    h1 {
-      font-size: 24px;
-      font-weight: 700;
+    h2 {
       text-align: center;
-      margin-bottom: 30px;
-      color: #ff00cc;
+      margin-bottom: 25px;
+      font-weight: 700;
+      color: #ff6f61;
+      text-shadow: 0 0 8px #ff6f61;
     }
     label {
       font-weight: 600;
+      margin-top: 15px;
     }
-    .form-select, .form-control {
-      background-color: #333;
-      color: #fff;
+    select, input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+      background: #222;
       border: none;
-      border-radius: 12px;
+      color: #eee;
+      padding: 12px 15px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    .payment-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
     }
     .btn-primary {
-      background: linear-gradient(to right, #ff00cc, #3333ff);
+      background: #ff6f61;
       border: none;
-      border-radius: 12px;
       width: 100%;
-      padding: 12px;
-      font-weight: 600;
-      margin-top: 20px;
-    }
-    .summary {
-      display: none;
-      background-color: #1f1f1f;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 20px;
-      text-align: center;
-    }
-    .summary h4 {
-      color: #00ffcc;
-    }
-    .download-btn {
-      margin-top: 15px;
-      padding: 10px;
-      background-color: #00ccff;
-      border: none;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 25px;
       border-radius: 10px;
-      color: white;
-      font-weight: bold;
+      box-shadow: 0 0 15px #ff6f61;
+    }
+    .btn-primary:hover {
+      background: #ff4b3f;
+    }
+    .payment-instructions {
+      background: #1f1f1f;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #ffd6cc;
+      box-shadow: inset 0 0 15px #ff6f61;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>HGZY SIGNAL GPT - Payment</h1>
-    <div class="mb-3">
-      <label for="method">Select Payment Method</label>
-      <select id="method" class="form-select" onchange="updateDetails()">
-        <option value="">-- Select Method --</option>
-        <option value="bkash">bKash</option>
-        <option value="nagad">Nagad</option>
-      </select>
-    </div>
-    <div id="payDetails" class="mb-3" style="display:none">
-      <p id="payInstruction"></p>
-    </div>
-    <div class="mb-3">
-      <label for="trxid">Enter Transaction ID</label>
-      <input type="text" class="form-control" id="trxid" placeholder="e.g. TX123456789">
-    </div>
-    <button class="btn btn-primary" onclick="submitPayment()">Submit</button><div class="summary" id="summaryBox">
-  <h4>Confirmation Summary</h4>
-  <p><strong>Name:</strong> <span id="sumName"></span></p>
-  <p><strong>Email:</strong> <span id="sumEmail"></span></p>
-  <p><strong>Telegram:</strong> <span id="sumTelegram"></span></p>
-  <p><strong>Password:</strong> <span id="sumPass"></span></p>
-  <p><strong>Package:</strong> <span id="sumPack"></span></p>
-  <p><strong>Payment Method:</strong> <span id="sumMethod"></span></p>
-  <p><strong>Transaction ID:</strong> <span id="sumTrx"></span></p>
-  <button class="download-btn" onclick="downloadSummary()">Download Summary</button>
-  <p class="mt-3 text-info">We will verify your details and contact you. Please wait patiently.</p>
-</div>
+  <div class="container" id="payment-section">
+    <h2>HGZY SIGNAL GPT - Payment</h2>
+    <form id="paymentForm" autocomplete="off">
+      <label>নাম</label>
+      <input type="text" id="name" readonly />
 
-  </div>  <script>
-    // Dummy user info (should be passed via localStorage or session in real case)
-    const userData = {
-      name: localStorage.getItem('name') || 'User Name',
-      email: localStorage.getItem('email') || 'example@gmail.com',
-      telegram: localStorage.getItem('telegram') || '017xxxxxxxx',
-      password: localStorage.getItem('password') || '********',
-      package: localStorage.getItem('package') || '7 Day - 450 Taka'
+      <label>ইমেইল</label>
+      <input type="email" id="email" readonly />
+
+      <label>টেলিগ্রাম নাম্বার</label>
+      <input type="text" id="telegram" readonly />
+
+      <label>পাসওয়ার্ড</label>
+      <input type="password" id="password" readonly />
+
+      <label>প্যাকেজ</label>
+      <input type="text" id="package" readonly />
+
+      <label>টাকার পরিমাণ</label>
+      <input type="number" id="amount" readonly />
+
+      <label>পেমেন্ট মাধ্যম নির্বাচন করুন</label>
+      <div class="payment-option">
+        <input type="radio" name="paymentMethod" value="bKash" id="bkash" required />
+        <label for="bkash"><img src="https://upload.wikimedia.org/wikipedia/commons/7/77/BKash_Logo.svg" style="height:20px; vertical-align:middle;"> bKash</label>
+      </div>
+      <div class="payment-option">
+        <input type="radio" name="paymentMethod" value="Nagad" id="nagad" />
+        <label for="nagad"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Nagad_Logo.svg" style="height:20px; vertical-align:middle;"> Nagad</label>
+      </div>
+
+      <label>ট্রানজেকশন আইডি</label>
+      <input type="text" id="transactionId" placeholder="ট্রানজেকশন আইডি লিখুন" required />
+
+      <div class="payment-instructions" style="display:none;"></div>
+
+      <button type="submit" class="btn-primary">Submit Payment</button>
+    </form>
+  </div>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+  apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
+  authDomain: "hgzy-signal-gpt.firebaseapp.com",
+  projectId: "hgzy-signal-gpt",
+  storageBucket: "hgzy-signal-gpt.firebasestorage.app",
+  messagingSenderId: "898048478460",
+  appId: "1:898048478460:web:78091c7128f9193f27db79",
+  measurementId: "G-LQH91EEL96"
+};
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // URL Params
+    function getParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param) || '';
+    }
+
+    // Fill fields
+    window.onload = () => {
+      ['name', 'email', 'telegram', 'password', 'package', 'amount'].forEach(id => {
+        document.getElementById(id).value = getParam(id);
+      });
     };
 
-    function updateDetails() {
-      const method = document.getElementById('method').value;
-      const payDetails = document.getElementById('payDetails');
-      const payInstruction = document.getElementById('payInstruction');
-      if(method === 'bkash') {
-        payDetails.style.display = 'block';
-        payInstruction.innerHTML = `Send <b>${userData.package}</b> to bKash Number: <b>01XXXXXXXXX</b>`;
-      } else if(method === 'nagad') {
-        payDetails.style.display = 'block';
-        payInstruction.innerHTML = `Send <b>${userData.package}</b> to Nagad Number: <b>01XXXXXXXXX</b>`;
-      } else {
-        payDetails.style.display = 'none';
-      }
-    }
+    // Payment number mapping
+    const paymentNumbers = {
+      bKash: '017XXXXXXXX',
+      Nagad: '018XXXXXXXX'
+    };
 
-    function submitPayment() {
-      const trxid = document.getElementById('trxid').value;
-      const method = document.getElementById('method').value;
-      if (!trxid || !method) {
-        Swal.fire('Incomplete', 'Please enter Transaction ID and select a payment method.', 'warning');
-        return;
-      }
-
-      document.getElementById('sumName').innerText = userData.name;
-      document.getElementById('sumEmail').innerText = userData.email;
-      document.getElementById('sumTelegram').innerText = userData.telegram;
-      document.getElementById('sumPass').innerText = userData.password;
-      document.getElementById('sumPack').innerText = userData.package;
-      document.getElementById('sumMethod').innerText = method;
-      document.getElementById('sumTrx').innerText = trxid;
-
-      document.getElementById('summaryBox').style.display = 'block';
-
-      // Save to Firebase (insert firebase firestore saving logic here)
-      // firebase.firestore().collection('payments').add({...})
-    }
-
-    function downloadSummary() {
-      html2canvas(document.getElementById('summaryBox')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'payment_summary.png';
-        link.href = canvas.toDataURL();
-        link.click();
+    // Show instructions
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+      radio.addEventListener('change', e => {
+        const method = e.target.value;
+        const amount = document.getElementById('amount').value;
+        const box = document.querySelector('.payment-instructions');
+        box.style.display = 'block';
+        box.innerHTML = `
+          <strong>${method} নম্বর:</strong> ${paymentNumbers[method]}<br>
+          অনুগ্রহ করে <strong>${amount} টাকা</strong> পাঠান এবং ট্রানজেকশন আইডি দিন।
+        `;
       });
-    }
-  </script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script></body>
+    });
+
+    // Submit handler
+    document.getElementById('paymentForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const data = {
+        name: getParam('name'),
+        email: getParam('email'),
+        telegram: getParam('telegram'),
+        password: getParam('password'),
+        package: getParam('package'),
+        amount: getParam('amount'),
+        paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
+        transactionId: document.getElementById('transactionId').value,
+        timestamp: new Date()
+      };
+
+      try {
+        await db.collection('payments').add(data);
+        Swal.fire("সাবমিট সফল", "আপনার পেমেন্ট ডেটা গ্রহণ করা হয়েছে!", "success");
+        document.getElementById('paymentForm').reset();
+        document.querySelector('.payment-instructions').style.display = 'none';
+      } catch (error) {
+        Swal.fire("ত্রুটি", "ডেটা পাঠাতে সমস্যা হয়েছে!", "error");
+        console.error("Error saving to Firestore:", error);
+      }
+    });
+  </script>
+</body>
 </html>
