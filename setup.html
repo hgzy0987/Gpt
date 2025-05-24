@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HGZY SIGNAL GPT | একাউন্ট সেটআপ</title>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 28px;
+      color: #f5af19;
+      margin-bottom: 30px;
+      text-align: center;
+      text-shadow: 0 0 10px #f5af19aa;
+    }
+    .openBtn {
+      background: linear-gradient(135deg, #f12711, #f5af19);
+      color: #fff;
+      font-size: 18px;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #f5af19aa;
+      transition: 0.3s;
+    }
+    .openBtn:hover {
+      transform: scale(1.05);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .modal-content {
+      background: #1a1a1a;
+      padding: 30px 20px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 25px #f5af19aa;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+    }
+    input, select { background: #2a2a2a; color: white; }
+    .nextBtn, .goPayBtn {
+      background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .nextBtn:hover, .goPayBtn:hover {
+      transform: scale(1.05);
+    }
+    .hidden { display: none; }
+    .step-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #f5af19;
+      text-shadow: 0 0 10px #f5af19aa;
+    }
+  </style>
+</head>
+<body><h1>HGZY SIGNAL GPT</h1>
+<button class="openBtn" onclick="document.getElementById('modal').style.display='flex'">একাউন্ট সেটআপ করুন</button><div id="modal" class="modal">
+  <div class="modal-content">
+    <div id="step1">
+      <div class="step-title">একাউন্ট সেটআপ করতে নিচের তথ্য দিন</div>
+      <input type="text" id="name" placeholder="আপনার নাম" required>
+      <input type="email" id="email" placeholder="আপনার জিমেইলটি লিখুন " required>
+      <input type="text" id="telegram" placeholder="১১ ডিজিট টেলিগ্রাম নাম্বার" required>
+      <input type="password" id="password" placeholder="যে পাসওয়ার্ডটি দিতে চান দিতে চান " required>
+      <div class="g-recaptcha" data-sitekey="6Lcsh0crAAAAAPa3mE2zoxuiXbtbAm7ipce_UgZt"></div>
+      <button class="nextBtn" onclick="goToStep2()">Next</button>
+    </div><div id="step2" class="hidden">
+  <div class="step-title">আপনার প্যাকেজ সিলেক্ট করুন</div>
+  <select id="package">
+    <option value="7 Day - 450 Taka">7 Day - 450 Taka</option>
+    <option value="15 Day - 900 Taka">15 Day - 900 Taka</option>
+    <option value="30 Day - 1700 Taka">30 Day - 1700 Taka</option>
+  </select>
+  <button class="goPayBtn" onclick="goToPayment()">Go to Payment</button>
+</div>
+
+  </div>
+</div><script>
+  function goToStep2() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const telegram = document.getElementById('telegram').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const recaptchaResponse = grecaptcha.getResponse();
+
+    if (!name || !email || !telegram || !password) {
+      alert("সব ঘর পূরণ করুন।");
+      return;
+    }
+    if (!email.endsWith("@gmail.com")) {
+      alert("শুধুমাত্র @gmail.com ইমেইল গ্রহণযোগ্য।");
+      return;
+    }
+    if (!/^\d{11}$/.test(telegram)) {
+      alert("টেলিগ্রাম নাম্বারটি ১১ সংখ্যার হতে হবে।");
+      return;
+    }
+    if (!recaptchaResponse) {
+      alert("reCAPTCHA পূরণ করুন।");
+      return;
+    }
+
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+  }
+
+  function goToPayment() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const telegram = document.getElementById('telegram').value;
+    const password = document.getElementById('password').value;
+    const package = document.getElementById('package').value;
+
+    const url = `payment.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&telegram=${encodeURIComponent(telegram)}&password=${encodeURIComponent(password)}&package=${encodeURIComponent(package)}`;
+    window.location.href = url;
+  }
+</script></body>
+</html>
