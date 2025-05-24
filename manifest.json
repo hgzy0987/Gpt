@@ -1,0 +1,21 @@
+{
+  "name": "HGZY SIGNAL GPT",
+  "short_name": "HGZY SIGNAL GPT",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/85MKyWDV/file-0000000061c861f9b54da720efc6b638.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.postimg.cc/85MKyWDV/file-0000000061c861f9b54da720efc6b638.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
