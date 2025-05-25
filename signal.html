@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HGZY SIGNAL</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    :root {
+      --bg-dark: #0d0d0d;
+      --bg-light: #f4f4f4;
+      --text-dark: #ffffff;
+      --text-light: #111111;
+      --accent: #00ffe7;
+      --glass: rgba(255, 255, 255, 0.05);
+    }
+
+    [data-theme="dark"] {
+      --bg: var(--bg-dark);
+      --text: var(--text-dark);
+    }
+
+    [data-theme="light"] {
+      --bg: var(--bg-light);
+      --text: var(--text-light);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #222;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      height: 38px;
+      border-radius: 12px;
+    }
+
+    .title {
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .verified {
+      height: 20px;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle input {
+      display: none;
+    }
+
+    .slider {
+      width: 50px;
+      height: 24px;
+      background: #555;
+      border-radius: 50px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .toggle input:checked + .slider::before {
+      transform: translateX(26px);
+    }
+
+    .main {
+      position: absolute;
+      top: 70px; /* Header height */
+      bottom: 60px; /* Footer height */
+      left: 0;
+      right: 0;
+      overflow-y: auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .main h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .main p {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 10px 0;
+      border-top: 1px solid #333;
+      z-index: 998;
+    }
+
+    .menu-item {
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .menu-item:active {
+      transform: scale(0.95);
+    }
+
+    .menu-item img {
+      height: 28px;
+      margin-bottom: 4px;
+    }
+
+    .menu-item span {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .menu-item a {
+      color: inherit;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-section">
+      <img src="https://i.postimg.cc/85MKyWDV/file-0000000061c861f9b54da720efc6b638.png" alt="Logo" class="logo">
+      <div class="title">HGZY SIGNAL GPT</div>
+      <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+      <dotlottie-player src="https://lottie.host/df0c9417-5ae0-4ce5-8dbe-394577955ab9/PIUvuDxZED.lottie" background="transparent" speed="1" style="width: 60px; height: 60px" loop autoplay></dotlottie-player>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="themeToggle">
+      <div class="slider"></div>
+    </label>
+  </div>
+
+  <!-- Main Content -->
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Shadow DOM Live Status</title>
+ </head>
+ <body>
+ 
+ <!-- এই ডিভে শ্যাডো ডম ইনজেক্ট করবো -->
+ <div id="live-status-container"></div>
+ 
+ <script type="module">
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+ import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+ 
+ const firebaseConfig = {
+ apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
+ authDomain: "hgzy-signal-gpt.firebaseapp.com",
+ projectId: "hgzy-signal-gpt",
+ storageBucket: "hgzy-signal-gpt.firebasestorage.app",
+ messagingSenderId: "898048478460",
+ appId: "1:898048478460:web:78091c7128f9193f27db79",
+ measurementId: "G-LQH91EEL96"
+ };
+ 
+ // Firebase init
+ const app = initializeApp(firebaseConfig);
+ const db = getFirestore(app);
+ 
+ // Shadow root তৈরি
+ const container = document.getElementById('live-status-container');
+ const shadow = container.attachShadow({ mode: 'open' });
+ 
+ // Shadow Dom এর HTML + CSS
+ shadow.innerHTML = `
+ <style>
+ #liveStatusBox {
+ position: fixed;
+ top: 105px;
+ left: 15px;
+ display: flex;
+ align-items: center;
+ gap: 10px;
+ background: linear-gradient(135deg, #081018, #142233);
+ padding: 10px 14px;
+ border-radius: 14px;
+ box-shadow: 0 0 15px #00ffb3cc, inset 0 0 8px #00ffb3cc;
+ color: #00ffb3;
+ font-family: 'Poppins', sans-serif;
+ font-weight: 600;
+ user-select: none;
+ z-index: 99999;
+ cursor: default;
+ transition: transform 0.3s ease;
+ min-width: 110px;
+ max-width: 200px;
+ }
+ #liveStatusBox:hover {
+ transform: scale(1.08);
+ box-shadow: 0 0 24px #00ffb3ff, inset 0 0 12px #00ffb3ff;
+ }
+ #statusImage {
+ width: 48px;
+ height: 48px;
+ border-radius: 50%;
+ border: 2.5px solid #00ffb3cc;
+ background-size: contain;
+ background-repeat: no-repeat;
+ background-position: center;
+ filter: drop-shadow(0 0 3px #00ffb3cc);
+ flex-shrink: 0;
+ transition: background-image 0.4s ease;
+ }
+ #statusText {
+ font-size: 1rem;
+ text-shadow: 0 0 5px #00ffb377;
+ white-space: nowrap;
+ }
+ @media (max-width: 480px) {
+ #liveStatusBox {
+ padding: 8px 10px;
+ gap: 8px;
+ min-width: 90px;
+ max-width: 160px;
+ }
+ #statusImage {
+ width: 38px;
+ height: 38px;
+ }
+ #statusText {
+ font-size: 0.9rem;
+ }
+ }
+ </style>
+ <div id="liveStatusBox" role="region" aria-label="Live status indicator">
+ <div id="statusImage" role="img" aria-live="polite" aria-atomic="true" aria-label="Live or Offline status"></div>
+ <div id="statusText" aria-live="polite" aria-atomic="true">Loading...</div>
+ </div>
+ `;
+ 
+ // Firebase থেকে ডকুমেন্টের রেফারেন্স
+ const statusDoc = doc(db, "admin", "status");
+ 
+ const statusImage = shadow.getElementById("statusImage");
+ const statusText = shadow.getElementById("statusText");
+ 
+ const liveImgURL = "https://cdn-icons-png.flaticon.com/512/190/190411.png";
+ const offlineImgURL = "https://i.postimg.cc/ZYr1cv9X/switch-off.png";
+ 
+ // রিয়েলটাইম লিসেনার
+ onSnapshot(statusDoc, (docSnap) => {
+ if (docSnap.exists()) {
+ const data = docSnap.data();
+ if (data.status === "live") {
+ statusImage.style.backgroundImage = `url(${liveImgURL})`;
+ statusText.textContent = "LIVE";
+ statusText.style.color = "#00ff77";
+ } else if (data.status === "offline") {
+ statusImage.style.backgroundImage = `url(${offlineImgURL})`;
+ statusText.textContent = "OFFLINE";
+ statusText.style.color = "#aaa";
+ } else {
+ statusImage.style.backgroundImage = "none";
+ statusText.textContent = "UNKNOWN";
+ statusText.style.color = "#f55";
+ }
+ } else {
+ statusImage.style.backgroundImage = "none";
+ statusText.textContent = "NOT SET";
+ statusText.style.color = "#888";
+ }
+ });
+ </script>
+ </body>
+ </html>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <!-- Bottom Menu -->
+ <!-- HGZY SIGNAL LIVE WIDGET START -->
+ <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+ 
+ <div id="signal-widget-root">
+ <style>
+ #signal-widget-root * {
+ box-sizing: border-box;
+ font-family: 'Poppins', sans-serif;
+ }
+ 
+ #signal-widget-root {
+ max-width: 95%;
+ margin: 0 auto;
+ padding: 16px;
+ background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
+ border-radius: 15px;
+ box-shadow: 0 0 15px #FFD70055;
+ text-align: center;
+ }
+ 
+ #signal-widget-root h3 {
+ font-size: 18px;
+ color: #FFD700;
+ margin-bottom: 15px;
+ text-shadow: 0 0 6px #FFD700;
+ animation: glow 2s ease-in-out infinite alternate;
+ }
+ 
+ @keyframes glow {
+ from { text-shadow: 0 0 5px #FFD700; }
+ to { text-shadow: 0 0 15px #FFD700; }
+ }
+ 
+ #signal-widget-boxes {
+ display: flex;
+ justify-content: center;
+ gap: 12px;
+ flex-wrap: wrap;
+ }
+ 
+ .signal-box {
+ flex: 1 1 100px;
+ min-width: 90px;
+ padding: 12px;
+ border: 2px solid #FFD700;
+ border-radius: 10px;
+ background: rgba(0, 0, 0, 0.7);
+ color: #FFD700;
+ font-size: 14px;
+ font-weight: bold;
+ box-shadow: 0 0 10px #FFD70033;
+ transition: 0.3s ease;
+ }
+ 
+ .signal-box:hover {
+ transform: scale(1.05);
+ box-shadow: 0 0 15px #FFD70066;
+ }
+ </style>
+ 
+ <h3>HGZY GAME 1-MINUTE LIVE SIGNAL</h3>
+ <div id="signal-widget-boxes">
+ <div id="signalBox1" class="signal-box">লোড হচ্ছে...</div>
+ <div id="signalBox2" class="signal-box">লোড হচ্ছে...</div>
+ <div id="signalBox3" class="signal-box">লোড হচ্ছে...</div>
+ </div>
+ </div>
+ 
+ <!-- Firebase Scripts -->
+ <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+ 
+ <script>
+ const firebaseConfig = {
+ apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
+ authDomain: "hgzy-signal-gpt.firebaseapp.com",
+ projectId: "hgzy-signal-gpt",
+ storageBucket: "hgzy-signal-gpt.appspot.com",
+ messagingSenderId: "898048478460",
+ appId: "1:898048478460:web:78091c7128f9193f27db79",
+ measurementId: "G-LQH91EEL96"
+ };
+ 
+ firebase.initializeApp(firebaseConfig);
+ const db = firebase.firestore();
+ 
+ const box1 = document.getElementById("signalBox1");
+ const box2 = document.getElementById("signalBox2");
+ const box3 = document.getElementById("signalBox3");
+ 
+ function loadSignal() {
+ db.collection("signals").doc("live").get().then((doc) => {
+ if (doc.exists) {
+ const data = doc.data();
+ box1.innerText = data.box1?.trim() || "No Signal";
+ box2.innerText = data.box2?.trim() || "No Signal";
+ box3.innerText = data.box3?.trim() || "No Signal";
+ } else {
+ box1.innerText = box2.innerText = box3.innerText = "Not Found";
+ }
+ }).catch((error) => {
+ console.error("Signal fetch error:", error);
+ box1.innerText = box2.innerText = box3.innerText = "Error";
+ });
+ }
+ 
+ setInterval(loadSignal, 1000);
+ loadSignal();
+ </script>
+ <!-- HGZY SIGNAL LIVE WIDGET END -->
+ <!-- HGZY Signal GPT Premium Section -->
+ <div class="hgzy-premium-section">
+ <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+ <div class="hgzy-content-wrapper">
+ <dotlottie-player
+ src="https://lottie.host/64e19999-4bef-4879-bb06-cd09c3b32526/QYma0kn1jG.lottie"
+ background="transparent"
+ speed="1"
+ style="width: 150px; height: 150px"
+ loop autoplay>
+ </dotlottie-player>
+ <p class="hgzy-premium-text">
+ <strong>HGZY SIGNAL GPT</strong> - থেকে আপনার Loss গুলো Recovery করুন এবং আপনার দৈনিক উপার্জন বৃদ্ধি করুন!<br>
+ আমাদের Signal ছাড়া অন্য কোন Signal দেখে Loss করলে GPT কতৃপক্ষ কোনোভাবেই দায়ী নয়।
+ </p>
+ </div>
+ </div>
+ 
+ <style>
+ .hgzy-premium-section {
+ padding: 40px 20px;
+ background: linear-gradient(135deg, #101010, #1c1c1c);
+ border-radius: 16px;
+ max-width: 500px;
+ margin: 40px auto;
+ box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+ overflow: hidden;
+ position: relative;
+ z-index: 1;
+ }
+ 
+ .hgzy-content-wrapper {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ text-align: center;
+ animation: fadeInUp 1s ease-in-out;
+ }
+ 
+ .hgzy-premium-text {
+ color: #ffffff;
+ font-size: 1.05rem;
+ line-height: 1.7;
+ margin-top: 20px;
+ font-family: 'Segoe UI', sans-serif;
+ background: rgba(255, 255, 255, 0.05);
+ padding: 15px 20px;
+ border-radius: 12px;
+ backdrop-filter: blur(5px);
+ box-shadow: 0 0 10px rgba(255,255,255,0.05);
+ }
+ 
+ @keyframes fadeInUp {
+ from {
+ transform: translateY(30px);
+ opacity: 0;
+ }
+ to {
+ transform: translateY(0);
+ opacity: 1;
+ }
+ }
+ 
+ @media (max-width: 480px) {
+ .hgzy-premium-text {
+ font-size: 0.95rem;
+ }
+ }
+ </style>
+ <div class="menu">
+ <div class="menu-item">
+ <a href="dashboard.html">
+ <img src="https://i.postimg.cc/sfvkhf7Z/home-1.png" alt="Profile">
+ <span>Home</span>
+ </a>
+ </div>
+ <div class="menu-item">
+ <a href="recharge.html">
+ <img src="https://i.postimg.cc/ZKjLbmL3/save-money.png" alt="Recharge">
+ <span>Recharge</span>
+ </a>
+ </div>
+ <div class="menu-item">
+ <a href="faq.html">
+ <img src="https://i.postimg.cc/tgDbDYdJ/faq-1.png" alt="FAQ">
+ <span>FAQ</span>
+ </a>
+ </div>
+ </div>
+ 
+ <!-- Theme Toggle Script -->
+ <script>
+ const toggle = document.getElementById("themeToggle");
+ toggle.addEventListener("change", () => {
+ document.documentElement.setAttribute("data-theme", toggle.checked ? "light" : "dark");
+ });
+ </script>
+ <script type="module">
+ // Import Firebase modules
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+ 
+ // Firebase config
+ const firebaseConfig = {
+ apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
+ authDomain: "hgzy-signal-gpt.firebaseapp.com",
+ projectId: "hgzy-signal-gpt",
+ storageBucket: "hgzy-signal-gpt.firebasestorage.app",
+ messagingSenderId: "898048478460",
+ appId: "1:898048478460:web:78091c7128f9193f27db79",
+ measurementId: "G-LQH91EEL96"
+ };
+ 
+ // Initialize Firebase
+ const app = initializeApp(firebaseConfig);
+ const auth = getAuth(app);
+ 
+ // Check auth state
+ onAuthStateChanged(auth, (user) => {
+ if (!user) {
+ // Redirect to login.html if not logged in
+ window.location.href = "login.html";
+ }
+ });
+ </script>
+ 
