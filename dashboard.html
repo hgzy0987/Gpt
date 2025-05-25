@@ -594,7 +594,109 @@
     </style>
     
    <br>
-      
+   <!-- Google Icon Import (Add once if not already) -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<!-- Premium VIP Button Section -->
+<div class="vip-button-container-exclusive">
+  <a href="vip.html" class="vip-button-exclusive">
+    <span class="material-symbols-outlined vip-icon">workspace_premium</span>
+    RECOVERY SIGNAL <span class="vip-label">VIP USER</span>
+    <span class="material-symbols-outlined vip-arrow">arrow_forward</span>
+  </a>
+</div>
+
+<style>
+  /* Fully Isolated Premium Styling */
+  .vip-button-container-exclusive {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+    position: relative;
+    z-index: 1; /* Ensures it stays below modals or popups */
+  }
+
+  .vip-button-exclusive {
+    background: linear-gradient(135deg, #7f00ff, #e100ff);
+    color: #fff;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 0 25px rgba(225, 0, 255, 0.3);
+    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vip-button-exclusive::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: skewX(-25deg);
+    transition: left 0.6s ease;
+  }
+
+  .vip-button-exclusive:hover::before {
+    left: 125%;
+  }
+
+  .vip-button-exclusive:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 35px rgba(127, 0, 255, 0.5);
+  }
+
+  .vip-icon {
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 5px;
+  }
+
+  .vip-label {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .vip-arrow {
+    font-size: 22px;
+    animation: slideRight 1s infinite alternate;
+  }
+
+  @keyframes slideRight {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(6px);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .vip-button-exclusive {
+      font-size: 16px;
+      padding: 14px 24px;
+    }
+
+    .vip-icon,
+    .vip-arrow {
+      font-size: 20px;
+    }
+  }
+</style>
 
    
   <!-- Bottom Menu -->
