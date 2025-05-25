@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HGZY SIGNAL</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    :root {
+      --bg-dark: #0d0d0d;
+      --bg-light: #f4f4f4;
+      --text-dark: #ffffff;
+      --text-light: #111111;
+      --accent: #00ffe7;
+      --glass: rgba(255, 255, 255, 0.05);
+    }
+
+    [data-theme="dark"] {
+      --bg: var(--bg-dark);
+      --text: var(--text-dark);
+    }
+
+    [data-theme="light"] {
+      --bg: var(--bg-light);
+      --text: var(--text-light);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #222;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      height: 38px;
+      border-radius: 12px;
+    }
+
+    .title {
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .verified {
+      height: 20px;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle input {
+      display: none;
+    }
+
+    .slider {
+      width: 50px;
+      height: 24px;
+      background: #555;
+      border-radius: 50px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .toggle input:checked + .slider::before {
+      transform: translateX(26px);
+    }
+
+    .main {
+      position: absolute;
+      top: 70px; /* Header height */
+      bottom: 60px; /* Footer height */
+      left: 0;
+      right: 0;
+      overflow-y: auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .main h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .main p {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 10px 0;
+      border-top: 1px solid #333;
+      z-index: 998;
+    }
+
+    .menu-item {
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .menu-item:active {
+      transform: scale(0.95);
+    }
+
+    .menu-item img {
+      height: 28px;
+      margin-bottom: 4px;
+    }
+
+    .menu-item span {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .menu-item a {
+      color: inherit;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-section">
+      <img src="https://i.postimg.cc/85MKyWDV/file-0000000061c861f9b54da720efc6b638.png" alt="Logo" class="logo">
+      <div class="title">HGZY SIGNAL GPT</div>
+      <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+      <dotlottie-player src="https://lottie.host/df0c9417-5ae0-4ce5-8dbe-394577955ab9/PIUvuDxZED.lottie" background="transparent" speed="1" style="width: 60px; height: 60px" loop autoplay></dotlottie-player>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="themeToggle">
+      <div class="slider"></div>
+    </label>
+  </div>
+
+  <!-- Main Scrollable Content -->
+ 
+    <!-- Example scrollable content -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <!-- VIP Recovery Typing + Password Section -->
+    <div class="vip-recovery-box">
+    <div class="typing-text" id="typingText"></div>
+    
+    <div id="passwordSection" style="display:none;">
+    <input type="password" id="vipPassword" placeholder="Enter VIP Access Password">
+    <button onclick="checkVIPPassword()">Submit</button>
+    </div>
+    </div>
+    
+    <!-- Pop-up Alert -->
+    <div id="popup" class="popup" style="display: none;">
+    <div class="popup-content">
+    <h3>ভুল পাসওয়ার্ড!</h3>
+    <p>VIP Package Upgrade করুন অথবা Admin এর সাথে যোগাযোগ করুন।</p>
+    <a href="https://t.me/Mod_X_BD" target="_blank" class="telegram-btn">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram"> যোগাযোগ করুন
+    </a>
+    <br><br>
+    <button onclick="closePopup()">বন্ধ করুন</button>
+    </div>
+    </div>
+    
+    <!-- Styles -->
+    <style>
+    .vip-recovery-box {
+    max-width: 90%;
+    margin: 30px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #111111, #1f1f1f);
+    border-radius: 14px;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 0 20px rgba(255, 0, 200, 0.2);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    }
+    
+    .typing-text {
+    font-size: 17px;
+    min-height: 100px;
+    text-align: center;
+    white-space: pre-line;
+    border-right: 2px solid #fff;
+    overflow: hidden;
+    }
+    
+    #passwordSection {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    }
+    
+    #vipPassword {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    width: 70%;
+    max-width: 250px;
+    font-size: 16px;
+    }
+    
+    #passwordSection button {
+    background: #ff00cc;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    }
+    
+    #passwordSection button:hover {
+    background: #d100b5;
+    }
+    
+    .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    .popup-content {
+    background: #222;
+    color: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 300px;
+    }
+    
+    .telegram-btn {
+    margin-top: 15px;
+    display: inline-flex;
+    align-items: center;
+    background: #0088cc;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    }
+    
+    .telegram-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    }
+    
+    @media (max-width: 480px) {
+    .typing-text {
+    font-size: 15px;
+    }
+    
+    #vipPassword {
+    width: 90%;
+    }
+    }
+    </style>
+    
+    <!-- Script -->
+    <script>
+    const text = "যারা Loss এ আছেন তাদের জন্য VIP Recovery Signal\nএই Signal এর মাধ্যমে আপনার Loss গুলো Recovery করতে পারবেন";
+    let index = 0;
+    const typingSpeed = 50;
+    
+    function typeText() {
+    if (index < text.length) {
+    document.getElementById("typingText").textContent += text.charAt(index);
+    index++;
+    setTimeout(typeText, typingSpeed);
+    } else {
+    document.getElementById("passwordSection").style.display = "flex";
+    }
+    }
+    
+    function checkVIPPassword() {
+    const input = document.getElementById("vipPassword").value;
+    if (input === "S2580BD") {
+    window.location.href = "vipsignal.html";
+    } else {
+    document.getElementById("popup").style.display = "flex";
+    }
+    }
+    
+    function closePopup() {
+    document.getElementById("popup").style.display = "none";
+    }
+    
+    window.onload = typeText;
+    </script>
+    <div class="hgzy-box">
+    <img src="https://i.postimg.cc/0QgkQjN2/victory-logocrest-logo-logo-template-vector.png" class="hgzy-img">
+    <div class="hgzy-text">HGZY VIP SIGNAL GPT</div>
+    </div>
+    
+    <style>
+    .hgzy-box {
+    width: 100%;
+    max-width: 300px;
+    margin: 40px auto;
+    background: #111;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px #00ffe1;
+    font-family: sans-serif;
+    }
+    .hgzy-img {
+    width: 220px;
+    height: auto;
+    margin-bottom: 15px;
+    }
+    .hgzy-text {
+    color: #00f0ff;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 0 8px #00f0ff, 0 0 15px #00f0ff;
+    animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+    from {
+    text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff;
+    }
+    to {
+    text-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff;
+    }
+    }
+    </style>
+    <br>
+    <br>
+    <!-- Bottom Menu -->
+    <div class="menu">
+    <div class="menu-item">
+    <a href="dashboard.html">
+    <img src="https://i.postimg.cc/Gtc9sJYC/home-1.png" alt="Profile">
+    <span>Home</span>
+    </a>
+    </div>
+    <div class="menu-item">
+    <a href="setup.html">
+    <img src="https://i.postimg.cc/ZKjLbmL3/save-money.png" alt="Recharge">
+    <span>Recharge</span>
+    </a>
+    </div>
+    <div class="menu-item">
+    <a href="signal.html">
+    <img src="https://i.postimg.cc/br3r0DH2/live.png" alt="FAQ">
+    <span>Signal</span>
+    </a>
+    </div>
+    </div>
+    
+    <!-- Theme Toggle Script -->
+    <script>
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("change", () => {
+    document.documentElement.setAttribute("data-theme", toggle.checked ? "light" : "dark");
+    });
+    </script>
+    </body>
+    </html>
