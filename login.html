@@ -147,7 +147,7 @@
   </script>
 
 </body>
-</html>
+</html> 
 <!-- Premium Floating Chat Widget Start -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:FILL@1..1&display=swap" rel="stylesheet">
@@ -265,57 +265,28 @@
   .ultra-chat-body button:hover {
     background: #0d47a1;
   }
-
-  .ultra-proof-form {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .ultra-proof-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-  }
-
-  .ultra-success-msg {
-    display: none;
-    color: green;
-    font-weight: 500;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
-  }
 </style>
 
 <div class="ultra-chat-widget">
   <div class="ultra-chat-btn" onclick="toggleUltraChat()">
-  <div class="ultra-chat-bubble" id="ultraBubble">আমাদের লিংকে একাউন্ট খুলুন</div>
-  <img src="https://i.postimg.cc/BZx56KRd/20250526-071816.png" alt="Chat Icon" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover;">
-</div>
+    <div class="ultra-chat-bubble" id="ultraBubble">আমাদের লিংকে একাউন্ট খুলুন</div>
+    <span class="material-symbols-rounded">chat</span>
+  </div>
+
   <div class="ultra-chat-box" id="ultraChatBox">
     <div class="ultra-chat-header">
       <img src="https://i.postimg.cc/BZx56KRd/20250526-071816.png" alt="HGZY Logo">
-      <span>HGZY Connect On GPT Service</span>
+      <span>HGZY Support</span>
     </div>
     <div class="ultra-chat-body">
       <button onclick="window.open('https://hgzy.cc/#/register?invitationCode=15121841809','_blank')">Create Account</button>
-      <button onclick="toggleUltraForm()">Submit Proof</button>
-      <form class="ultra-proof-form" id="ultraProofForm">
-        <input type="text" id="ultraName" placeholder="আপনার নাম" required>
-        <input type="text" id="ultraTelegram" placeholder="টেলিগ্রাম নাম্বার" required>
-        <input type="text" id="ultraUid" placeholder="HGZY UID" required>
-        <button type="submit">Submit</button>
-      </form>
-      <div class="ultra-success-msg" id="ultraSuccess">তথ্য সফলভাবে জমা হয়েছে!</div>
+      <button onclick="window.location.href='proof.html'">Submit Proof</button>
     </div>
   </div>
 </div>
 
-<!-- Firebase Integration -->
+<!-- Firebase Integration (Optional for proof.html or future use) -->
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
@@ -326,46 +297,18 @@
     appId: "1:898048478460:web:78091c7128f9193f27db79"
   };
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
 </script>
 
-<!-- Widget Logic -->
 <script>
   const ultraBox = document.getElementById("ultraChatBox");
   const ultraBubble = document.getElementById("ultraBubble");
-  const ultraForm = document.getElementById("ultraProofForm");
-  const ultraSuccess = document.getElementById("ultraSuccess");
 
   function toggleUltraChat() {
     ultraBox.style.display = ultraBox.style.display === 'block' ? 'none' : 'block';
     ultraBubble.style.display = 'none';
   }
 
-  function toggleUltraForm() {
-    ultraForm.style.display = ultraForm.style.display === 'flex' ? 'none' : 'flex';
-    ultraSuccess.style.display = 'none';
-  }
-
-  ultraForm.addEventListener("submit", function(e) {
-    e.preventDefault();
-    const name = document.getElementById("ultraName").value.trim();
-    const telegram = document.getElementById("ultraTelegram").value.trim();
-    const uid = document.getElementById("ultraUid").value.trim();
-
-    db.collection("proofSubmissions").add({
-      name, telegram, uid, timestamp: new Date()
-    }).then(() => {
-      ultraForm.reset();
-      ultraForm.style.display = 'none';
-      ultraSuccess.style.display = 'block';
-      setTimeout(() => {
-        window.location.href = "setup.html";
-      }, 3000);
-    }).catch(err => {
-      alert("ত্রুটি হয়েছে: " + err.message);
-    });
-  });
-
+  // Auto-hide bubble after 6 seconds
   setTimeout(() => {
     ultraBubble.style.display = 'none';
   }, 6000);
