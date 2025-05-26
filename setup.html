@@ -142,14 +142,16 @@
   }
 
   function goToPayment() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const telegram = document.getElementById('telegram').value;
-    const password = document.getElementById('password').value;
-    const package = document.getElementById('package').value;
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const telegram = document.getElementById('telegram').value;
+  const password = document.getElementById('password').value;
 
-    const url = `payment.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&telegram=${encodeURIComponent(telegram)}&password=${encodeURIComponent(password)}&package=${encodeURIComponent(package)}`;
-    window.location.href = url;
+  const packageValue = document.getElementById('package').value;
+  const price = packageValue.match(/\d+/g).pop(); // শুধু সংখ্যাটি পাবে, যেমন 900
+
+  const url = `payment.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&telegram=${encodeURIComponent(telegram)}&password=${encodeURIComponent(password)}&package=${encodeURIComponent(packageValue)}&price=${encodeURIComponent(price)}`;
+  window.location.href = url;
   }
 </script></body>
 </html>
