@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MODX Premium Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Rajdhani:wght@600&display=swap" rel="stylesheet"/>
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      background: linear-gradient(160deg, #0a0a0a, #1b1b1b);
+      font-family: 'Rajdhani', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+    .login-container {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #00ffeebb;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #00ffeebb;
+      backdrop-filter: blur(10px);
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    dotlottie-player {
+      margin-bottom: -30px;
+    }
+    .login-container h2 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: #00ffee;
+      text-shadow: 0 0 10px #00ffeea8;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background: #1f1f1f;
+      color: #fff;
+    }
+    .btn {
+      background: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 15px;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background-color: #00ddb5;
+    }
+    #message {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #ff7070;
+      min-height: 20px;
+    }
+    .setup-link {
+      margin-top: 20px;
+      font-size: 15px;
+    }
+    .setup-link a {
+      color: #00ffee;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .setup-link a:hover {
+      text-decoration: underline;
+    }
+    .g-recaptcha {
+      margin-top: 15px;
+      transform: scale(0.88);
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <dotlottie-player src="https://lottie.host/205ef898-530d-441e-abd2-d6e7c920bcdc/tfGYz2Wb0z.lottie" background="transparent" speed="1" style="width: 310px; height: 220px" loop autoplay></dotlottie-player>
+    
+    <h2>HGZY GPT LOGIN</h2>
+    
+    <input type="email" id="email" placeholder="Enter Email" />
+    <input type="password" id="password" placeholder="Enter Password" />
+    
+    <div class="g-recaptcha" data-sitekey="6Lcsh0crAAAAAPa3mE2zoxuiXbtbAm7ipce_UgZt"></div>
+
+    <button class="btn" onclick="login()">Login</button>
+    
+    <div id="message"></div>
+    <div class="setup-link">Don't have setup? <a href="setup.html">SETUP NOW</a></div>
+  </div>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+  apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
+  authDomain: "hgzy-signal-gpt.firebaseapp.com",
+  projectId: "hgzy-signal-gpt",
+  storageBucket: "hgzy-signal-gpt.firebasestorage.app",
+  messagingSenderId: "898048478460",
+  appId: "1:898048478460:web:78091c7128f9193f27db79",
+  measurementId: "G-LQH91EEL96"
+};
+    firebase.initializeApp(firebaseConfig);
+
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const recaptchaResponse = grecaptcha.getResponse();
+      const msg = document.getElementById("message");
+
+      if (!recaptchaResponse) {
+        msg.textContent = "Please verify reCAPTCHA.";
+        return;
+      }
+
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          msg.style.color = "#00ffb7";
+          msg.textContent = "Login successful! Redirecting...";
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 1000);
+        })
+        .catch((error) => {
+          msg.textContent = "Login failed: " + error.message;
+        });
+    }
+  </script>
+
+</body>
+</html>
