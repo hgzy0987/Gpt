@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proof Submit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f4f8fb;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }.container {
+  max-width: 420px;
+  width: 100%;
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  margin-top: 40px;
+  text-align: center;
+}
+
+h2 {
+  color: #2e7d32;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+form input, form button, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+form button {
+  background: #1e88e5;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+form button:hover {
+  background: #1565c0;
+}
+
+.success-message {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: none;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>আমাদের টিমে এ যোগদান দেওয়ার জন্য ধন্যবাদ</h2>
+    <p>Proof Submit করুন</p>
+    <form id="proofForm">
+      <input type="text" id="name" placeholder="আপনার নাম" required>
+      <input type="email" id="email" placeholder="আপনার ইমেইল" required>
+      <input type="text" id="telegram" placeholder="টেলিগ্রাম নাম্বার" required>
+      <input type="text" id="uid" placeholder="HGZY GAME UID" required>
+      <input type="file" id="screenshot" accept="image/*" required>
+      <button type="submit">Submit</button>
+    </form>
+    <div class="success-message" id="successMsg">আপনার তথ্য সফলভাবে জমা হয়েছে। কিছুক্ষণ অপেক্ষা করুন আমরা আপনার সাথে যোগাযোগ করবো।</div>
+  </div>  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
+      authDomain: "hgzy-signal-gpt.firebaseapp.com",
+      projectId: "hgzy-signal-gpt",
+      storageBucket: "hgzy-signal-gpt.firebasestorage.app",
+      messagingSenderId: "898048478460",
+      appId: "1:898048478460:web:78091c7128f9193f27db79",
+      measurementId: "G-LQH91EEL96"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.getElementById('proofForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const telegram = document.getElementById('telegram').value;
+      const uid = document.getElementById('uid').value;
+      const screenshot = document.getElementById('screenshot').files[0];
+
+      if (!screenshot) return alert("দয়া করে স্ক্রিনশট নির্বাচন করুন");
+
+      const formData = new FormData();
+      formData.append("image", screenshot);
+      formData.append("key", "3305fbf17e54a31c5ee46795eed61dd0"); // ImgBB API Key
+
+      const res = await fetch("https://api.imgbb.com/1/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      const imgData = await res.json();
+      const imageUrl = imgData.data.url;
+
+      await db.collection("proof_submissions").add({
+        name, email, telegram, uid, imageUrl,
+        timestamp: new Date().toISOString()
+      });
+
+      document.getElementById('successMsg').style.display = 'block';
+
+      setTimeout(() => {
+        window.location.href = 'setup.html';
+      }, 3000);
+    });
+  </script></body>
+</html>
