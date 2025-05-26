@@ -39,7 +39,7 @@
       font-weight: 600;
       margin-top: 15px;
     }
-    select, input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+    input, select {
       background: #222;
       border: none;
       color: #eee;
@@ -48,7 +48,6 @@
       width: 100%;
       font-size: 16px;
       margin-top: 5px;
-      box-sizing: border-box;
     }
     .payment-option {
       display: flex;
@@ -106,6 +105,9 @@
       <label>প্যাকেজ</label>
       <input type="text" id="package" readonly />
 
+      <label>মূল্য (৳)</label>
+      <input type="text" id="amount" readonly />
+
       <label>পেমেন্ট মাধ্যম নির্বাচন করুন</label>
       <div class="payment-option">
         <input type="radio" name="paymentMethod" value="bKash" id="bkash" required />
@@ -126,62 +128,61 @@
   </div>
 
   <script>
-    // Firebase Config
     const firebaseConfig = {
-  apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
-  authDomain: "hgzy-signal-gpt.firebaseapp.com",
-  projectId: "hgzy-signal-gpt",
-  storageBucket: "hgzy-signal-gpt.firebasestorage.app",
-  messagingSenderId: "898048478460",
-  appId: "1:898048478460:web:78091c7128f9193f27db79",
-  measurementId: "G-LQH91EEL96"
-};
+      apiKey: "AIzaSyDNA3h0fExL49Bth-G8nnw_PZ_laNn2tUc",
+      authDomain: "hgzy-signal-gpt.firebaseapp.com",
+      projectId: "hgzy-signal-gpt",
+      storageBucket: "hgzy-signal-gpt.firebasestorage.app",
+      messagingSenderId: "898048478460",
+      appId: "1:898048478460:web:78091c7128f9193f27db79",
+      measurementId: "G-LQH91EEL96"
+    };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // URL Params
+    // Get URL Parameter
     function getParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param) || '';
     }
 
-    // Fill fields
+    // Fill Fields on Load
     window.onload = () => {
       ['name', 'email', 'telegram', 'password', 'package', 'amount'].forEach(id => {
-        document.getElementById(id).value = getParam(id);
+        const input = document.getElementById(id);
+        if (input) input.value = getParam(id);
       });
     };
 
-    // Payment number mapping
     const paymentNumbers = {
       bKash: '01318645435',
       Nagad: '01855966005'
     };
 
-    // Show instructions
+    // Show Payment Instructions
     document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
       radio.addEventListener('change', e => {
         const method = e.target.value;
-        const amount = document.getElementById('package').value;
+        const amount = document.getElementById('amount').value;
         const box = document.querySelector('.payment-instructions');
         box.style.display = 'block';
         box.innerHTML = `
           <strong>${method} নম্বর:</strong> ${paymentNumbers[method]}<br>
-          অনুগ্রহ করে আপনার ফোন থেকে <strong> টাকা</strong> সেন্ড মানি করুন এবং ট্রানজেকশন আইডি দিন।
+          অনুগ্রহ করে <strong>${amount} টাকা</strong> সেন্ড মানি করুন এবং নিচে ট্রানজেকশন আইডি দিন।
         `;
       });
     });
 
-    // Submit handler
+    // Submit Handler
     document.getElementById('paymentForm').addEventListener('submit', async e => {
       e.preventDefault();
       const data = {
-        name: getParam('name'),
-        email: getParam('email'),
-        telegram: getParam('telegram'),
-        password: getParam('password'),
-        package: getParam('package'),
-        amount: getParam('amount'),
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        telegram: document.getElementById('telegram').value,
+        password: document.getElementById('password').value,
+        package: document.getElementById('package').value,
+        amount: document.getElementById('amount').value,
         paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
         transactionId: document.getElementById('transactionId').value,
         timestamp: new Date()
@@ -189,12 +190,12 @@
 
       try {
         await db.collection('payments').add(data);
-        Swal.fire("সাবমিট সফল", "আপনার পেমেন্ট ডেটা গ্রহণ করা হয়েছে! কিছুক্ষণ অপেক্ষা করুন আপনার তথ্য যাচাই করে আপনার সাথে যোগাযোগ করা হবে", "success");
+        Swal.fire("সাবমিট সফল", "পেমেন্ট সফলভাবে গ্রহণ করা হয়েছে। যাচাই শেষে আপনাকে জানানো হবে।", "success");
         document.getElementById('paymentForm').reset();
         document.querySelector('.payment-instructions').style.display = 'none';
-      } catch (error) {
-        Swal.fire("ত্রুটি", "ডেটা পাঠাতে সমস্যা হয়েছে!", "error");
-        console.error("Error saving to Firestore:", error);
+      } catch (err) {
+        Swal.fire("ত্রুটি", "তথ্য পাঠাতে সমস্যা হয়েছে। আবার চেষ্টা করুন।", "error");
+        console.error("Firestore Error:", err);
       }
     });
   </script>
