@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HGZY SIGNAL GPT - Payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(145deg, #1a1a1a, #222);
+      color: #fff;
+      padding: 30px 10px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #2c2c2e;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(255, 0, 128, 0.2);
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ff00cc;
+    }
+    label {
+      font-weight: 600;
+    }
+    .form-select, .form-control {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+    }
+    .btn-primary {
+      background: linear-gradient(to right, #ff00cc, #3333ff);
+      border: none;
+      border-radius: 12px;
+      width: 100%;
+      padding: 12px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    .summary {
+      display: none;
+      background-color: #1f1f1f;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .summary h4 {
+      color: #00ffcc;
+    }
+    .download-btn {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #00ccff;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HGZY SIGNAL GPT - Payment</h1>
+    <div class="mb-3">
+      <label for="method">Select Payment Method</label>
+      <select id="method" class="form-select" onchange="updateDetails()">
+        <option value="">-- Select Method --</option>
+        <option value="bkash">bKash</option>
+        <option value="nagad">Nagad</option>
+      </select>
+    </div>
+    <div id="payDetails" class="mb-3" style="display:none">
+      <p id="payInstruction"></p>
+    </div>
+    <div class="mb-3">
+      <label for="trxid">Enter Transaction ID</label>
+      <input type="text" class="form-control" id="trxid" placeholder="e.g. TX123456789">
+    </div>
+    <button class="btn btn-primary" onclick="submitPayment()">Submit</button><div class="summary" id="summaryBox">
+  <h4>Confirmation Summary</h4>
+  <p><strong>Name:</strong> <span id="sumName"></span></p>
+  <p><strong>Email:</strong> <span id="sumEmail"></span></p>
+  <p><strong>Telegram:</strong> <span id="sumTelegram"></span></p>
+  <p><strong>Password:</strong> <span id="sumPass"></span></p>
+  <p><strong>Package:</strong> <span id="sumPack"></span></p>
+  <p><strong>Payment Method:</strong> <span id="sumMethod"></span></p>
+  <p><strong>Transaction ID:</strong> <span id="sumTrx"></span></p>
+  <button class="download-btn" onclick="downloadSummary()">Download Summary</button>
+  <p class="mt-3 text-info">We will verify your details and contact you. Please wait patiently.</p>
+</div>
+
+  </div>  <script>
+    // Dummy user info (should be passed via localStorage or session in real case)
+    const userData = {
+      name: localStorage.getItem('name') || 'User Name',
+      email: localStorage.getItem('email') || 'example@gmail.com',
+      telegram: localStorage.getItem('telegram') || '017xxxxxxxx',
+      password: localStorage.getItem('password') || '********',
+      package: localStorage.getItem('package') || '7 Day - 450 Taka'
+    };
+
+    function updateDetails() {
+      const method = document.getElementById('method').value;
+      const payDetails = document.getElementById('payDetails');
+      const payInstruction = document.getElementById('payInstruction');
+      if(method === 'bkash') {
+        payDetails.style.display = 'block';
+        payInstruction.innerHTML = `Send <b>${userData.package}</b> to bKash Number: <b>01XXXXXXXXX</b>`;
+      } else if(method === 'nagad') {
+        payDetails.style.display = 'block';
+        payInstruction.innerHTML = `Send <b>${userData.package}</b> to Nagad Number: <b>01XXXXXXXXX</b>`;
+      } else {
+        payDetails.style.display = 'none';
+      }
+    }
+
+    function submitPayment() {
+      const trxid = document.getElementById('trxid').value;
+      const method = document.getElementById('method').value;
+      if (!trxid || !method) {
+        Swal.fire('Incomplete', 'Please enter Transaction ID and select a payment method.', 'warning');
+        return;
+      }
+
+      document.getElementById('sumName').innerText = userData.name;
+      document.getElementById('sumEmail').innerText = userData.email;
+      document.getElementById('sumTelegram').innerText = userData.telegram;
+      document.getElementById('sumPass').innerText = userData.password;
+      document.getElementById('sumPack').innerText = userData.package;
+      document.getElementById('sumMethod').innerText = method;
+      document.getElementById('sumTrx').innerText = trxid;
+
+      document.getElementById('summaryBox').style.display = 'block';
+
+      // Save to Firebase (insert firebase firestore saving logic here)
+      // firebase.firestore().collection('payments').add({...})
+    }
+
+    function downloadSummary() {
+      html2canvas(document.getElementById('summaryBox')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'payment_summary.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script></body>
+</html>
