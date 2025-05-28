@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Premium WIN GO Notice</title>
+
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+
+  <!-- Lottie Player -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+    }
+
+    .notice-box {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 25px 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      animation: slideUp 1s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notice-box h2 {
+      font-size: 1.6rem;
+      color: #fdd835;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .material-symbols-rounded {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 48;
+      font-size: 28px;
+    }
+
+    .notice-text {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #111;
+      background-color: #ffd700;
+      padding: 10px 18px;
+      border-radius: 40px;
+      display: inline-block;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    lottie-player {
+      height: 90px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 500px) {
+      .notice-box h2 {
+        font-size: 1.3rem;
+      }
+      .notice-text {
+        font-size: 1rem;
+      }
+      .countdown {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notice-box">
+    <lottie-player src="https://lottie.host/781f7f0a-c6cb-4c28-9893-793ee850c30f/cnML8D8STW.json" background="transparent" speed="1" loop autoplay></lottie-player>
+
+    <h2><span class="material-symbols-rounded">campaign</span>নোটিশ</h2>
+
+    <div class="notice-text">
+      WIN GO 1 MINUTES মার্কেট টা বর্তমানে উল্টো পাল্টা চলছে।<br>
+      দয়া করে অপেক্ষা করুন <strong>২:৩০</strong> পর্যন্ত।
+    </div>
+
+    <div class="countdown" id="countdown">লোড হচ্ছে...</div>
+  </div>
+
+  <script>
+    const now = new Date();
+    const target = new Date();
+    target.setHours(14, 30, 0, 0);
+    if (now > target) {
+      target.setDate(target.getDate() + 1); // যদি সময় পেরিয়ে যায়, পরের দিনের জন্য
+    }
+
+    function updateCountdown() {
+      const current = new Date();
+      const diff = target - current;
+
+      if (diff <= 0) {
+        document.getElementById("countdown").innerText = "সময় শেষ!";
+        return;
+      }
+
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById("countdown").innerText =
+        `${h ? h + " ঘণ্টা " : ""}${m} মিনিট ${s} সেকেন্ড`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
+</body>
+</html>
